@@ -1,3 +1,5 @@
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 from django.shortcuts import render
 import datetime
 from .models import ProductCategory, Product, Contacts
@@ -33,7 +35,7 @@ def main(request):
     return render(request, 'mainapp/index.html', content)
 
 
-def products(request, pk=None):
+def products(request, pk=None, page=1):
 
     title = 'продукты'
     links_menu = ProductCategory.objects.all()
@@ -44,17 +46,25 @@ def products(request, pk=None):
 
     if pk is not None:
         if pk == 0:
-            products_list = Product.objects.all()
+            products = Product.objects.all()
             category = {'name': 'все', 'pk': 0}
         else:
             category = get_object_or_404(ProductCategory, pk=pk)
-            products_list = Product.objects.filter(category__pk=pk)
+            products = Product.objects.filter(category__pk=pk, is_active=True, category__is_active=True).order_by('price')
+
+        paginator = Paginator(products, 2)
+        try:
+            products_paginator = paginator.page(page)
+        except PageNotAnInteger:
+            products_paginator = paginator.page(1)
+        except EmptyPage:
+            products_paginator = paginator.page(paginator.num_pages)
 
         content = {
             'title': title,
             'links_menu': links_menu,
-            'products_list': products_list,
             'category': category,
+            'products': products_paginator,
             'basket': get_basket(request.user),
         }
 
