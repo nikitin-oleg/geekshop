@@ -4,10 +4,10 @@
 
 
 {% block content %}
-<form class="form-horizontal" action="{% url 'auth:edit' %}" method="post" encrypt = "multipart/form-data">
+<form class="form-horizontal" action="{% url 'auth:edit' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ edit_form.as_p }}
-        <br>
+        {{ profile_form.as_p }}
         <input class="form-control" type="submit" value="сохранить">
     </form>
     <button class="btn btn-round form-control">
@@ -15,5 +15,5 @@
             на главную
         </a>
     </button>
-<div class="user_avatar"><img src="/media/{{user.avatar}}"></div>
+<div class="user_avatar"><img src="/media/{{ user.avatar }}"></div>
 {% endblock %}

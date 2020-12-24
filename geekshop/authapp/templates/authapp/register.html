@@ -4,15 +4,15 @@
 
 
 {% block content %}
-<form class="form-horizontal" action="{% url 'auth:register' %}" method="post" encrypt = "multipart/form-data">
+    <form class="form-horizontal" action="{% url 'auth:register' %}" method="post" encrypt = "multipart/form-data">
         {% csrf_token %}
         {{ register_form.as_p }}
         <br>
         <input class="form-control" type="submit" value="зарегистрироваться">
     </form>
-    <button class="btn btn-round form-control">
-        <a href="{% url 'auth:register' %}" class="">
-            зарегистрироваться
-        </a>
-    </button>
+<!--    <button class="btn btn-round form-control">-->
+<!--        <a href="{% url 'auth:register' %}" class="">-->
+<!--            зарегистрироваться-->
+<!--        </a>-->
+<!--    </button>-->
 {% endblock %}
